@@ -68,6 +68,17 @@
 			<!--情报补充:元素与计算属性绑定需要写在computed才能绑定		元素与方法绑定,方法需要写在methods中才能绑定-->
 			<!--情报:Vue实例中引用一个data最好	引用多个data会产生警告-->
 
+			<ul>
+				<li v-for="vare in items">
+					{{vare.elementV}}
+				</li>
+			</ul>
+			
+			<ul>
+				<li v-for="(vare,index) in items">
+					{{index}} : {{vare.elementV}}
+				</li>
+			</ul>
 		</div>
 	</body>
 
@@ -85,7 +96,13 @@
 				'redfont': true,
 				'bluefont': false,
 				'deepskybluefont': false
-			}
+			},
+			items:[
+				{elementV:'zhangsan'},
+				{elementV:'lisi'},
+				{elementV:'wangwu'}
+			]
+			
 		};
 
 		//		加载数据到Vue Example实例对象内	Vm内存中包含datamodel数据结构
@@ -109,7 +126,7 @@
 				computenum: function() {
 					return new Date().getTime();
 				}
-			},
+			}
 
 		})
 
