@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+
+		<style>
+			.redfont {
+				color: red;
+			}
+			
+			.bluefont {
+				color: blue;
+			}
+			
+			.deepskybluefont {
+				color: deepskyblue;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="location">
+			<!--{{取綁定的Vue的身上包含的值}}-->
+			<p id="data1">{{one}}</p>
+
+			<!--if指令	选择元素是否显现-->
+			<p v-if="true">{{one}}</p>
+			<p v-if="false">{{one}}</p>
+
+			<!--{{}}双大括号会将数据解释为普通文本-->
+			<p>{{html}}</p>
+			<!--为了输出真正的 HTML，需要使用 v-html指令 v-htm里面无需{{}}再次取值	填写数据结构内的属性名称-->
+			<p v-html="html"></p>
+
+			<!--v-on:click当触发单击事件时	改变数据结构中的one值-->
+			<button v-on:click="one='15'" id="btn1">按下请求</button>
+
+			<!--<button onclick="alert({{one}})">{{two}}</button>-->
+			<button onclick="console.log('getVueBindElemValue= '+document.getElementById('data1').innerText+' Date= '+new Date().getTime())">按下获得</button>
+
+			<!--从数据结构获得url		以前a href是写死的	现在的a:href可以从Vue内含的数据结构获得-->
+			<!--第一个完整写法	第二个是省略写法-->
+			<a v-bind:href="url" target="_blank">complete link</a>
+			<a :href="url" target="_blank">abbreviation link</a>
+
+			<!--注册绑定事件	当受到点击时	触发事件		事件不同于绑定原生的JavaScript 	绑定需方法在Vue实例中的methods{}内才能被Vue绑定上 不能绑定随意作用域的方法-->
+			<button v-on:click="vonClick">点击</button>
+			<button @click="vonClick">点击</button>
+
+			<!--将需要的值绑定到Vue方法	方法返回值后将放入此处	绑定的计算方法需要在computed	才能让Vue绑定得到		这个地方也称:计算属性 使用{{name}}对计算方法进行绑定-->
+			<p>绑定方法 获得执行的返回值是: {{ computenum }}</p>
+
+			<!--普通的应用样式-->
+			<p class="redfont">hello word</p>
+			<!--应用data属性的classdyeing数据		deepskybluefont与bluefont样式将被隐藏		呈现的样式只是redfont 红色-->
+			<p v-bind:class="classdyeing">hello word</p>
+			<!--绑定click事件	当click时	获得classdyeing访问里面的元素	修改元素的值	,分割可以修改多个		修改后呈现的样式只有deepskybluefont 蓝色-->
+			<button v-on:click="classdyeing.redfont=false,classdyeing.deepskybluefont=true">改变样式</button>
+
+			<!--情报1:在Vue内将元素绑定	其元素内部子节点可以对Vue中引用的数据结构发起操作-->
+			<!--情报2:Vue的操作,交由Vue操作,外界不能改变Vue内部数据结构及获得Vue内部数据结构-->
+			<!--情报3:虽然外界方法不能对Vue实例产生操作,但可以从绑定在Vue实例上的元素下手,比如获得绑定在Vue身上的元素对象间接操作Vue-->
+			<!--情报4:无论何时	绑定的数据对象上属性发生了改变		插值处的内容{{属性}}都会更新-->
+			<!--情报5:{{}}不仅取数据结构的值	还能绑定计算方法	可能是计算方法计算后	return返回的依然一个值	所以依然可以使用{{}}绑定	而方法却是一段代码的执行-->
+			<!--情报补充:元素与计算属性绑定需要写在computed才能绑定		元素与方法绑定,方法需要写在methods中才能绑定-->
+			<!--情报:Vue实例中引用一个data最好	引用多个data会产生警告-->
+
+		</div>
+	</body>
+
+	<script>
+		//		数据准备
+		var datamodel = {
+			one: 1,
+			two: 2,
+			//			备用数据,开始不用,到点再用
+			sparedata: -1,
+			html: '<h1>hello word<h1>',
+			url: 'http://daomu.kaige123.com/',
+			//			在数据结构中	定制样式	'样式名':是否显示
+			classdyeing: {
+				'redfont': true,
+				'bluefont': false,
+				'deepskybluefont': false
+			}
+		};
+
+		//		加载数据到Vue Example实例对象内	Vm内存中包含datamodel数据结构
+		var vm = new Vue({
+			//			将数据结构引用到Vue对象变量中
+			data: datamodel,
+			//			将当前实例对象	绑定在元素身上
+			el: '#location',
+			created: function() {
+				//				生命周期钩子的函数	created 钩子可以用来在一个实例被创建之后执行代码	this 当前对象	指向调用它的 Vue 实例
+				console.log("Vue Example Create " + this.one)
+			},
+			methods: {
+				//				方法在methods中	受到Vue的管理	元素才能使用v-click将自身与方法绑定	不能绑定原生方法	或不再同一个作用域的方法
+				vonClick: function() {
+					console.log("elem cover click")
+				}
+			},
+			//			方法经过计算返回值	返回到引用处	需要在computed申明	此处不同于methods	一个是方法绑定	一个是经计算后带返回值方法绑定
+			computed: {
+				computenum: function() {
+					return new Date().getTime();
+				}
+			},
+
+		})
+
+		//		访问vm	能访问datamodel数据结构
+		console.log("data.one= " + datamodel.one + " | vue quote data.one= " + vm.one)
+
+		//		vm对象变量	对datamodel数据结构	的数据产生赋值操作	将影响datamodel	说明是内存间的引用
+		console.log("change data.one before data= " + datamodel.one)
+		vm.one = 10
+		console.log("change data.one after data= " + vm.one)
+
+		//		对数据接口产生修改	将影响vm对象变量	说明是内存间的引用
+		console.log("change->data-see data= " + datamodel.two)
+		datamodel.two = 11
+		console.log("change->data-see vue= " + vm.two)
+
+		//		向Vue实例增加数据		Vue可以取得值	但数据结构不会增加数据	说明不是全双工地址引用	仅起到联系关系
+		vm.three = 12
+		console.log("into vue increase data see vue= " + vm.three + " see data= " + datamodel.three)
+
+		//		向数据结构增加数据		数据结构可以取得值	但Vue实例不会增加数据	说明不是全双工地址引用	仅起到联系关系
+		datamodel.four = 13
+		console.log("into data increase data see data= " + vm.three + " see vue= " + datamodel.three)
+
+		//		启用备用数据	因为向vm增加数据	数据结构不会增加	所以提前占位即可
+		vm.sparedata = 14
+		console.log("enable date sparedate see data= " + datamodel.sparedata + " see vue= " + vm.sparedata)
+
+		vm.$watch('one', function() {
+			// 这个回调将在 `vm.one` 改变后调用
+			console.log('change one after value= ' + document.getElementById('data1').innerText);
+		})
+	</script>
+
+</html>
