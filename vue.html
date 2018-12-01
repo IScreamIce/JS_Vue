@@ -69,12 +69,14 @@
 			<!--情报:Vue实例中引用一个data最好	引用多个data会产生警告-->
 
 			<ul>
+				<!--v-for指令	从data循环数组items 其数组内每一个下标元素寄存在vare变量上	等于是for(var : arrays)-->
 				<li v-for="vare in items">
 					{{vare.elementV}}
 				</li>
 			</ul>
 			
 			<ul>
+				<!--循环data数据结构中的item数组,将元素放在变量vare身上,还将过程中产生下标寄存在变量index上,产生了两个量,数组内的对象元素变量与下班变量-->
 				<li v-for="(vare,index) in items">
 					{{index}} : {{vare.elementV}}
 				</li>
@@ -97,6 +99,7 @@
 				'bluefont': false,
 				'deepskybluefont': false
 			},
+			//	准备数组[]数据,里面是一个个的{key:val}元素
 			items:[
 				{elementV:'zhangsan'},
 				{elementV:'lisi'},
