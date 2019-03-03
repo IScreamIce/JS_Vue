@@ -43,12 +43,16 @@
 
 			<!--从数据结构获得url		以前a href是写死的	现在的a:href可以从Vue内含的数据结构获得-->
 			<!--第一个完整写法	第二个是省略写法-->
+			<!--元素内可以使用{{}}获取数据。双引号内，使用属性绑定v-bind获取数据-->
 			<a v-bind:href="url" target="_blank">complete link</a>
 			<a :href="url" target="_blank">abbreviation link</a>
 
 			<!--注册绑定事件	当受到点击时	触发事件		事件不同于绑定原生的JavaScript 	绑定需方法在Vue实例中的methods{}内才能被Vue绑定上 不能绑定随意作用域的方法-->
 			<button v-on:click="vonClick">点击</button>
 			<button @click="vonClick">点击</button>
+			
+			<!-- 2019/3/3补充，v-on绑定单击事件，v-on="method"，也可也v-on="method(val)" 可以给方法传递参数!方法写参数接收即可-->
+			<!-- <button v-on:click="vonClick(10)">点击</button> -->
 
 			<!--将需要的值绑定到Vue方法	方法返回值后将放入此处	绑定的计算方法需要在computed	才能让Vue绑定得到		这个地方也称:计算属性 使用{{name}}对计算方法进行绑定-->
 			<p>绑定方法 获得执行的返回值是: {{ computenum }}</p>
@@ -115,7 +119,9 @@
 			//			将当前实例对象	绑定在元素身上
 			el: '#location',
 			created: function() {
-				//				生命周期钩子的函数	created 钩子可以用来在一个实例被创建之后执行代码	this 当前对象	指向调用它的 Vue 实例
+				//				生命周期钩子的函数	created 钩子可以用来在一个实例被创建之后执行代码	
+				
+				当前对象	指向调用它的 Vue 实例
 				console.log("Vue Example Create " + this.one)
 			},
 			methods: {
